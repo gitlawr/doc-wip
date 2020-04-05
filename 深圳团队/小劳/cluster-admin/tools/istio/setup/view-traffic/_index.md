@@ -1,25 +1,25 @@
 ---
-title: 7. Generate and View Traffic
+title: 7. 产生并查看流量
 ---
 
-This section describes how to view the traffic that is being managed by Istio.
+本节介绍如何查看由Istio管理的流量。
 
-## The Kiali Traffic Graph
+## Kiali流量图
 
-Rancher integrates a Kiali graph into the Rancher UI. The Kiali graph provides a powerful way to visualize the topology of your Istio service mesh. It shows you which services communicate with each other.
+Rancher将Kiali图集成到Rancher UI中。Kiali图提供了一种强大的方式来可视化Istio服务网格的拓扑。它向您显示哪些服务相互通信。
 
-To see the traffic graph,
+要查看流量图，
 
-1. From the project view in Rancher, click **Resources > Istio.**
-1. Go to the **Traffic Graph** tab. This tab has the Kiali network visualization integrated into the UI.
+1. 在Rancher的项目视图中，单击**资源 > Istio**。
+1. 转到**流量图**标签页。此标签页将Kiali网络可视化集成到UI中。
 
-If you refresh the URL to the BookInfo app several times, you should be able to see green arrows on the Kiali graph showing traffic to `v1` and `v3` of the `reviews` service. The control panel on the right side of the graph lets you configure details including how many minutes of the most recent traffic should be shown on the graph.
+如果您多次刷新BookInfo应用程序的URL，您应该能够在Kiali图上看到绿色箭头，其中显示了到`reviews`服务的`v1`和` v3`的访问量。图表右侧的控制面板可让您配置详细信息，包括应在图表上显示多少分钟的最新流量。
 
-For additional tools and visualizations, you can go to each UI for Kiali, Jaeger, Grafana, and Prometheus by clicking their icons in the top right corner of the page.
+要获得其他工具和可视化效果，您可以通过单击页面右上角的Kiali，Jaeger，Grafana和Prometheus的每个UI进入它们的界面。
 
-## Viewing Traffic Metrics
+## 查看流量指标
 
-Istio’s monitoring features provide visibility into the performance of all your services.
+Istio的监控功能使您可以查看所有服务的性能。
 
-1. From the project view in Rancher, click **Resources > Istio.**
-1. Go to the **Traffic Metrics** tab. After traffic is generated in your cluster, you should be able to see metrics for **Success Rate, Request Volume, 4xx Response Count, Project 5xx Response Count** and **Request Duration.**
+1. 在Rancher的项目视图中，单击**资源 > Istio**。
+1. 转到**流量指标**标签页。在集群中生成流量之后，您应该能够看到**成功率，请求量，4xx响应计数，项目5xx响应计数**和**请求持续时间**的指标。

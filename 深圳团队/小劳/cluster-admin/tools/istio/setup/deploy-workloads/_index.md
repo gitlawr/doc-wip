@@ -1,55 +1,55 @@
 ---
-title: 4. Add Deployments and Services with the Istio Sidecar
+title: 4. 添加带Istio sidecar的部署和服务
 ---
 
-> **Prerequisite:** To enable Istio for a workload, the cluster and namespace must have Istio enabled.
+> **先决条件：** 要为工作负载启用Istio，集群和命名空间必须启用Istio。
 
-Enabling Istio in a namespace only enables automatic sidecar injection for new workloads. To enable the Envoy sidecar for existing workloads, you need to enable it manually for each workload.
+在命名空间中启用Istio后仅对新的工作负载启用自动Sidecar注入。要为现有工作负载启用Envoy Sidecar，您需要为每个工作负载手动启用它。
 
-To inject the Istio sidecar on an existing workload in the namespace, go to the workload, click the **Ellipsis (...),** and click **Redeploy.** When the workload is redeployed, it will have the Envoy sidecar automatically injected.
+要将Istio sidecar注入命名空间中的现有工作负载，请转到工作负载页面，单击**省略号 (...)**，然后单击**重新部署**。重新部署工作负载时，Envoy sidecar会自动注入。
 
-Wait a few minutes for the workload to upgrade to have the istio sidecar. Click it and go to the Containers section. You should be able to see istio-init and istio-proxy alongside your original workload. This means the Istio sidecar is enabled for the workload. Istio is doing all the wiring for the sidecar envoy. Now Istio can do all the features automatically if you enable them in the yaml.
+等待几分钟，以使工作负载升级到带有Istio sidecar。单击该工作负载，然后转到**容器**部分。您应该能够在工作负载中看到istio-init和istio-proxy容器。这意味着已为工作负载启用了Istio sidecar。Istio正在为Envoy sidecar进行所有接线。现在，如果您通过Yaml中使用了Istio的功能，则Istio可以自动执行。
 
-### 3. Add Deployments and Services
+### 3. 添加部署和服务
 
-Next we add the Kubernetes resources for the sample deployments and services for the BookInfo app in Istio's documentation.
+接下来，我们再添加Istio文档中的BookInfo示例应用程序相关的Kubernetes资源。
 
-1. Go to the project inside the cluster you want to deploy the workload on.
-1. In Workloads, click **Import YAML.**
-1. Copy the below resources into the form.
-1. Click **Import.**
+1. 进入要部署工作负载的项目中。
+1. 在工作负载页面，单击**导入YAML**。
+1. 将以下资源复制到表单中。
+1. 单击**导入**。
 
-This will set up the following sample resources from Istio's example BookInfo app:
+这将从Istio的BookInfo示例应用中设置以下资源：
 
-Details service and deployment:
+Details部署和服务:
 
-- A `details` Service
-- A ServiceAccount for `bookinfo-details`
-- A `details-v1` Deployment
+- 一个名为`details`的Service
+- 一个名为`bookinfo-details`的ServiceAccount
+- 一个名为`details-v1`的Deployment
 
-Ratings service and deployment:
+Ratings部署和服务:
 
-- A `ratings` Service
-- A ServiceAccount for `bookinfo-ratings`
-- A `ratings-v1` Deployment
+- 一个名为`ratings`的Service
+- 一个名为`bookinfo-ratings`的ServiceAccount
+- 一个名为`ratings-v1`的Deployment
 
-Reviews service and deployments (three versions):
+Reviews部署和服务（三个版本）：
 
-- A `reviews` Service
-- A ServiceAccount for `bookinfo-reviews`
-- A `reviews-v1` Deployment
-- A `reviews-v2` Deployment
-- A `reviews-v3` Deployment
+- 一个名为`reviews`的Service
+- 一个名为`bookinfo-reviews`的ServiceAccount
+- 一个名为`reviews-v1`的Deployment
+- 一个名为`reviews-v2`的Deployment
+- 一个名为`reviews-v3`的Deployment
 
-Productpage service and deployment:
+Productpage部署和服务:
 
-This is the main page of the app, which will be visible from a web browser. The other services will be called from this page.
+这是应用程序的主页，可从网页浏览器中看到。其他服务将从此页面调用。
 
-- A `productpage` service
-- A ServiceAccount for `bookinfo-productpage`
-- A `productpage-v1` Deployment
+- 一个名为`productpage`的Service
+- 一个名为`bookinfo-productpage`的ServiceAccount
+- 一个名为`productpage-v1`的Deployment
 
-### Resource YAML
+### 资源YAML
 
 ```yaml
 # Copyright 2017 Istio Authors
@@ -319,4 +319,4 @@ spec:
 
 ```
 
-### [Next: Set up the Istio Gateway](/docs/cluster-admin/tools/istio/setup/gateway)
+### [下一步：设置Istio网关](/docs/cluster-admin/tools/istio/setup/gateway)

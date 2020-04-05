@@ -1,148 +1,148 @@
 ---
-title: CPU and Memory Allocations
+title: CPU和内存分配
 ---
-_Available as of v2.3.0_
+_从v2.3.0版本开始支持_
 
-This section describes the minimum recommended computing resources for the Istio components in a cluster.
+本节介绍了集群中Istio组件的最低推荐计算资源。
 
-The CPU and memory allocations for each component are [configurable.](#configuring-resource-allocations)
+每个组件的CPU和内存分配都是 [可配置的](#configuring-resource-allocations)。
 
-Before enabling Istio, we recommend that you confirm that your Rancher worker nodes have enough CPU and memory to run all of the components of Istio.
+启用Istio之前，建议您确认Rancher worker节点具有足够的CPU和内存来运行Istio的所有组件。
 
-> **Tip:** In larger deployments, it is strongly advised that the infrastructure be placed on dedicated nodes in the cluster by adding a node selector for each Istio component.
+> **提示：** 在较大型的部署中，强烈建议通过为每个Istio组件添加节点选择器，将基础结构放置在集群中的专用节点上。
 
-The table below shows a summary of the minimum recommended resource requests and limits for the CPU and memory of each central Istio component.
+下表汇总了建议的最低资源要求以及每个Istio核心组件的CPU和内存限制。
 
-In Kubernetes, the resource request indicates that the workload will not deployed on a node unless the node has at least the specified amount of memory and CPU available. If the workload surpasses the limit for CPU or memory, it can be terminated or evicted from the node. For more information on managing resource limits for containers, refer to the [Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/)
+在Kubernetes中，资源请求意味着除非该节点至少具有指定数量的可用内存和CPU，否则不会在该节点上部署工作负载。如果工作负载超过CPU或内存的限制，则可以终止该工作负载或将其从节点中逐出。有关管理容器资源限制的更多信息，请参考 [Kubernetes文档](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/)。
 
-Workload | Container | CPU - Request | Mem - Request | CPU - Limit | Mem - Limit | Configurable
+工作负载 | 容器 | CPU - 请求 | Mem - 请求 | CPU - 限制 | Mem - 限制 | 是否可配置
 ---------|-----------|---------------|---------------|-------------|-------------|-------------
-istio-pilot |discovery| 500m | 2048Mi | 1000m | 4096Mi | Y
- istio-telemetry |mixer| 1000m         | 1024Mi        | 4800m       | 4096Mi      | Y            
- istio-policy | mixer      | 1000m         | 1024Mi        | 4800m       | 4096Mi      | Y            
- istio-tracing   | jaeger     | 100m          | 100Mi         | 500m        | 1024Mi      | Y            
- prometheus      | prometheus | 750m          | 750Mi         | 1000m       | 1024Mi      | Y            
- grafana         | grafana    | 100m          | 100Mi         | 200m        | 512Mi       | Y            
- Others          | -        | 500m          | 500Mi         | -         | -         | N            
+istio-pilot |discovery| 500m | 2048Mi | 1000m | 4096Mi | 是
+ istio-telemetry |mixer| 1000m         | 1024Mi        | 4800m       | 4096Mi      | 是            
+ istio-policy | mixer      | 1000m         | 1024Mi        | 4800m       | 4096Mi      | 是            
+ istio-tracing   | jaeger     | 100m          | 100Mi         | 500m        | 1024Mi      | 是            
+ prometheus      | prometheus | 750m          | 750Mi         | 1000m       | 1024Mi      | 是            
+ grafana         | grafana    | 100m          | 100Mi         | 200m        | 512Mi       | 是            
+ Others          | -        | 500m          | 500Mi         | -         | -         | 否            
  **Total**           | **-**        | **3950m**         | **5546Mi**        | **>12300m**         | **>14848Mi**         | **-**   
 
 
-## Configuring Resource Allocations
+## 配置资源分配
 
-You can individually configure the resource allocation for each type of Istio component. This section includes the default resource allocations for each component.
+您可以为每种Istio组件类型分别配置资源分配。本节包括每个组件的默认资源分配。
 
-To make it easier to schedule the workloads to a node, a cluster administrator can reduce the CPU and memory resource requests for the component. However, the default CPU and memory allocations are the minimum that we recommend.
+为了更轻松地将工作负载调度到节点，集群管理员可以减少对该组件的CPU和内存资源请求。但是，默认的CPU和内存分配是我们建议的最小值。
 
-You can find more information about Istio configuration in the [official Istio documentation](https://istio.io/docs/concepts/what-is-istio).
+您可以在[Istio官方文档](https://istio.io/docs/concepts/what-is-istio)中找到有关Istio配置的更多信息。
 
-To configure the resources allocated to an Istio component, 
+要配置分配给Istio组件的资源，
 
-1. In Rancher, go to the cluster where you have Istio installed.
-1. Click **Tools > Istio.** This opens the Istio configuration page.
-1. Change the CPU or memory allocations, the nodes where each component will be scheduled to, or the node tolerations.
-1. Click **Save.**
+1. 在Rancher中，转到已安装Istio的集群。
+1. 单击 **工具 > Istio**。这将打开Istio配置页面。
+1. 更改CPU或内存分配，每个组件要被调度到的节点，或节点容忍。
+1. 单击 **保存**。
 
-**Result:** The resource allocations for the Istio components are updated.
+**结果：** Istio组件的资源分配已更新。
 
 ### Pilot
 
-[Pilot](https://istio.io/docs/ops/deployment/architecture/#pilot)  provides the following:
+[Pilot](https://istio.io/docs/ops/deployment/architecture/#pilot)组件提供以下功能：
 
-- Authentication configuration
-- Service discovery for the Envoy sidecars
-- Traffic management capabilities for intelligent routing (A/B tests and canary rollouts)
-- Configuration for resiliency (timeouts, retries, circuit breakers, etc)
+- 认证配置
+- Envoy sidecar的服务发现
+- 用于智能路由的流量管理功能（A/B测试和金丝雀发布）
+- 弹性配置（超时，重试，断路器等）
 
-For more information on Pilot, refer to the [documentation](https://istio.io/docs/concepts/traffic-management/#pilot-and-envoy).
+有关Pilot组件的更多信息，请参阅[文档](https://istio.io/docs/concepts/traffic-management/#pilot-and-envoy).
 
-Option | Description| Required | Default
+选项 | 描述| 是否必填项 | 默认值
 -------|------------|-------|-------
-Pilot CPU Limit | CPU resource limit for the istio-pilot pod.| Yes      | 1000
-Pilot CPU Reservation | CPU reservation for the istio-pilot pod. | Yes      | 500
-Pilot Memory Limit | Memory resource limit for the istio-pilot pod. | Yes      | 4096
-Pilot Memory Reservation | Memory resource requests for the istio-pilot pod. | Yes      | 2048
-Trace sampling Percentage | [Trace sampling percentage](https://istio.io/docs/tasks/telemetry/distributed-tracing/overview/#trace-sampling) | Yes      | 1
-Pilot Selector | Ability to select the nodes in which istio-pilot pod is deployed to. To use this option, the nodes must have labels. | No       | n/a
+Pilot CPU限制 | Istio-pilot pod的CPU资源限制。 | 是      | 1000
+Pilot CPU预留 | Istio-pilot pod的CPU资源预留。 | 是      | 500
+Pilot Memory限制 | Istio-pilot pod的内存资源限制。 | 是      | 4096
+Pilot Memory预留 | Istio-pilot pod的内存资源预留。 | 是      | 2048
+跟踪抽样比例 | [跟踪抽样的比例](https://istio.io/docs/tasks/telemetry/distributed-tracing/overview/#trace-sampling) | 是      | 1
+Pilot 结点选择器 | 能够选择将istio-pilot pod部署到的节点。要使用此选项，节点必须带有对应标签。 | 否       | n/a
 
 ### Mixer
 
-[Mixer](https://istio.io/docs/ops/deployment/architecture/#mixer)  enforces access control and usage policies across the service mesh. It also integrates with plugins for monitoring tools such as Prometheus. The Envoy sidecar proxy passes telemetry data and monitoring data to Mixer, and Mixer passes the monitoring data to Prometheus.
+[Mixer](https://istio.io/docs/ops/deployment/architecture/#mixer)组件跨服务网格实施访问控制和使用策略。它还与用于监视工具（例如Prometheus）的插件集成。Envoy sidecar将遥测数据和监视数据传递给Mixer，而Mixer将监视数据传递给Prometheus。
 
-For more information on Mixer, policies and telemetry, refer to the [documentation](https://istio.io/docs/concepts/policies-and-telemetry/).
+有关Mixer，策略和遥测的更多信息，请参阅[文档](https://istio.io/docs/concepts/policies-and-telemetry/)。
 
-Option | Description| Required | Default
+选项 | 描述| 是否必填项 | 默认值
 -------|------------|-------|-------
-Mixer Telemetry CPU Limit | CPU resource limit for the istio-telemetry pod.| Yes                      | 4800
-Mixer Telemetry CPU Reservation | CPU reservation for the istio-telemetry pod.| Yes                      | 1000
-Mixer Telemetry Memory Limit | Memory resource limit for the istio-telemetry pod.| Yes                      | 4096
-Mixer Telemetry Memory Reservation | Memory resource requests for the istio-telemetry pod.| Yes                      | 1024
-Enable Mixer Policy | Whether or not to deploy the istio-policy. | Yes                      | False
-Mixer Policy CPU Limit | CPU resource limit for the istio-policy pod. | Yes, when policy enabled | 4800
-Mixer Policy CPU Reservation | CPU reservation for the istio-policy pod. | Yes, when policy enabled | 1000
-Mixer Policy Memory Limit | Memory resource limit for the istio-policy pod. | Yes, when policy enabled | 4096
-Mixer Policy Memory Reservation | Memory resource requests for the istio-policy pod. | Yes, when policy enabled | 1024
-Mixer Selector | Ability to select the nodes in which istio-policy and istio-telemetry pods are deployed to. To use this option, the nodes must have labels. | No                       | n/a
+Mixer Telemetry CPU限制 | Istio-telemetry pod的CPU资源限制。 | 是                      | 4800
+Mixer Telemetry CPU预留 | Istio-telemetry pod的CPU资源预留。 | 是                      | 1000
+Mixer Telemetry Memory限制 | Istio-telemetry pod的内存资源限制。 | 是                      | 4096
+Mixer Telemetry Memory预留 | Istio-telemetry pod的内存资源预留。 | 是                      | 1024
+Enable Mixer Policy | 是否部署istio-policy。 | 是                      | False
+Mixer Policy CPU限制 | Istio-policy pod的CPU资源限制。 | 是，当Policy启用时 | 4800
+Mixer Policy CPU预留 | Istio-policy pod的CPU资源预留。 | 是，当Policy启用时 | 1000
+Mixer Policy Memory限制 | Istio-policy pod的内存资源限制。 | 是，当Policy启用时 | 4096
+Mixer Policy Memory预留 | Istio-policy pod的内存资源预留。 | 是，当Policy启用时 | 1024
+Mixer 结点选择器 | 能够选择将istio-policy和istio-telemetry pods部署到的节点。要使用此选项，节点必须带有对应标签。 | 否                       | n/a
 
 ### Tracing
 
-[Distributed tracing](https://istio.io/docs/tasks/telemetry/distributed-tracing/overview/) enables users to track a request through a service mesh. This makes it easier to troubleshoot problems with latency, parallelism and serialization.
+[分布式跟踪](https://istio.io/docs/tasks/telemetry/distributed-tracing/overview/)使用户可以通过服务网格跟踪请求。这使解决延迟，并行性和序列化问题变得更加容易。
 
-Option | Description| Required | Default
+选项 | 描述| 是否必填项 | 默认值
 -------|------------|-------|-------
-Enable Tracing | Whether or not to deploy the istio-tracing. | Yes | True
-Tracing CPU Limit | CPU resource limit for the istio-tracing pod.  | Yes      | 500
-Tracing CPU Reservation | CPU reservation for the istio-tracing pod. | Yes      | 100
-Tracing Memory Limit | Memory resource limit for the istio-tracing pod. | Yes      | 1024
-Tracing Memory Reservation | Memory resource requests for the istio-tracing pod.  | Yes      | 100
-Tracing Selector | Ability to select the nodes in which tracing pod is deployed to. To use this option, the nodes must have labels. | No       | n/a
+启用跟踪 | 是否部署istio-tracing。 | 是 | 是
+Tracing CPU限制 | Istio-tracing pod的CPU资源限制。  | 是      | 500
+Tracing CPU预留 | Istio-tracing pod的CPU资源预留。 | 是      | 100
+Tracing Memory限制 | Istio-tracing pod的内存资源限制。 | 是      | 1024
+Tracing Memory预留 | Istio-tracing pod的内存资源预留。 | 是      | 100
+Tracing 结点选择器 | 能够选择将tracing pod部署到的节点。要使用此选项，节点必须带有对应标签。 | 否       | n/a
 
-### Ingress Gateway
+### Ingress网关
 
-The Istio gateway allows Istio features such as monitoring and route rules to be applied to traffic entering the cluster. This gateway is a prerequisite for outside traffic to make requests to Istio.
+Istio网关允许将Istio功能（例如监视和路由规则）应用于进入集群的流量。此网关是外部流量向Istio发出请求的先决条件。
 
-For more information, refer to the [documentation](https://istio.io/docs/tasks/traffic-management/ingress/).
+有关更多信息，请参阅[文档](https://istio.io/docs/tasks/traffic-management/ingress/).
 
-Option | Description| Required | Default
+选项 | 描述| 是否必填项 | 默认值
 -------|------------|-------|-------
-Enable Ingress Gateway | Whether or not to deploy the istio-ingressgateway. | Yes      | False
-Service Type of Istio Ingress Gateway | How to expose the gateway. You can choose NodePort or Loadbalancer | Yes      | NodePort
-Http2 Port | The NodePort for http2 requests  | Yes      | 31380
-Https Port | The NodePort for https requests  | Yes      | 31390
-Load Balancer IP | Ingress Gateway Load Balancer IP | No       | n/a
-Load Balancer Source Ranges | Ingress Gateway Load Balancer Source Ranges | No       | n/a
-Ingress Gateway CPU Limit | CPU resource limit for the istio-ingressgateway pod. | Yes      | 2000
-Ingress Gateway CPU Reservation | CPU reservation for the istio-ingressgateway pod. | Yes      | 100
-Ingress Gateway Memory Limit | Memory resource limit for the istio-ingressgateway pod. | Yes      | 1024
-Ingress Gateway Memory Reservation | Memory resource requests for the istio-ingressgateway pod. | Yes      | 128
-Ingress Gateway Selector | Ability to select the nodes in which istio-ingressgateway pod is deployed to. To use this option, the nodes must have labels. | No       | n/a
+启用Ingress网关 | 是否部署istio-ingressgateway。 | 是      | 否
+Ingress网关的服务类型 | 暴露网关服务的方式。你可以选择NodePort或Loadbalancer | 是      | NodePort
+Http2端口 | http2请求的NodePort端口  | 是      | 31380
+Https端口 | https请求的NodePort端口  | 是      | 31390
+Load Balancer IP | Ingress网关的负载均衡器IP | 否       | n/a
+负载均衡器IP源范围 | Ingress网关负载均衡器IP源的范围 | 否       | n/a
+Ingress Gateway CPU限制 | Istio-ingressgateway的CPU资源限制。 | 是      | 2000
+Ingress Gateway CPU预留 | Istio-ingressgateway的CPU资源预留。 | 是      | 100
+Ingress Gateway Memory限制 | Istio-ingressgateway的内存资源限制。 | 是      | 1024
+Ingress Gateway Memory预留 | Istio-ingressgateway的内存资源预留。 | 是      | 128
+Ingress Gateway结点选择器 | 能够选择将Istio-ingressgateway pod部署到的节点。要使用此选项，节点必须带有对应标签。 | 否       | n/a
 
 ### Prometheus
 
-You can query for Istio metrics using Prometheus. Prometheus is an open-source systems monitoring and alerting toolkit.
+您可以使用Prometheus查询Istio指标。Prometheus是一个开源系统监视和警报工具包。
 
-Option | Description| Required | Default
+选项 | 描述| 是否必填项 | 默认值
 -------|------------|-------|-------
-Prometheus CPU Limit | CPU resource limit for the Prometheus pod.| Yes      | 1000
-Prometheus CPU Reservation | CPU reservation for the Prometheus pod.| Yes      | 750
-Prometheus Memory Limit | Memory resource limit for the Prometheus pod.| Yes      | 1024
-Prometheus Memory Reservation | Memory resource requests for the Prometheus pod.| Yes      | 750
-Retention for Prometheus | How long your Prometheus instance retains data | Yes      | 6
-Prometheus Selector | Ability to select the nodes in which Prometheus pod is deployed to. To use this option, the nodes must have labels.| No       | n/a
+Prometheus CPU限制 | Prometheus pod的CPU资源限制。 | 是      | 1000
+Prometheus CPU预留 | Prometheus pod的CPU资源预留。 | 是      | 750
+Prometheus Memory限制 | Prometheus pod的内存资源限制。 | 是      | 1024
+Prometheus Memory预留 | Prometheus pod的内存资源预留。 | 是      | 750
+Prometheus数据保留 | Prometheus实例保留数据的时长 | 是      | 6
+Prometheus结点选择器 | 能够选择将Prometheus pod部署到的节点。要使用此选项，节点必须带有对应标签。 | 否       | n/a
 
 ### Grafana
 
-You can visualize metrics with Grafana. Grafana lets you visualize Istio traffic data scraped by Prometheus.
+您可以使用Grafana可视化指标。Grafana可让您可视化Prometheus抓取的Istio流量数据。
 
-Option | Description| Required | Default
+选项 | 描述| 是否必填项 | 默认值
 -------|------------|-------|-------
-Enable Grafana | Whether or not to deploy the Grafana.| Yes                                                         | True
-Grafana CPU Limit | CPU resource limit for the Grafana pod.| Yes, when Grafana enabled                                   | 200
-Grafana CPU Reservation | CPU reservation for the Grafana pod.| Yes, when Grafana enabled                                   | 100
-Grafana Memory Limit | Memory resource limit for the Grafana pod.| Yes, when Grafana enabled                                   | 512
-Grafana Memory Reservation | Memory resource requests for the Grafana pod.| Yes, when Grafana enabled                                   | 100
-Grafana Selector | Ability to select the nodes in which Grafana pod is deployed to. To use this option, the nodes must have labels. | No                                                          | n/a
-Enable Persistent Storage for Grafana | Enable Persistent Storage for Grafana | Yes, when Grafana enabled                                   | False
-Source | Use a Storage Class to provision a new persistent volume or Use an existing persistent volume claim | Yes, when Grafana enabled and enabled PV                    | Use SC
-Storage Class | Storage Class for provisioning PV for Grafana | Yes, when Grafana enabled, enabled PV and use storage class | Use the default class
-Persistent Volume Size | The size for the PV you would like to provision for Grafana | Yes, when Grafana enabled, enabled PV and use storage class | 5Gi
-Existing Claim | Use existing PVC for Grafana | Yes, when Grafana enabled, enabled PV and use existing PVC  | n/a
+启用Grafana | 是否部署Grafana。 | 是                                                         | 是
+Grafana CPU限制 | Grafana pod的CPU资源限制。 | 是，当Grafana启用时                                   | 200
+Grafana CPU预留 | Grafana pod的CPU资源预留。 | 是，当Grafana启用时                                   | 100
+Grafana Memory限制 | Grafana pod的内存资源限制。 | 是，当Grafana启用时                                   | 512
+Grafana Memory预留 | Grafana pod的内存资源预留。 | 是，当Grafana启用时                                   | 100
+Grafana结点选择器 | 能够选择将Grafana pod部署到的节点。要使用此选项，节点必须带有对应标签。 | 否                                                          | n/a
+启用Grafana持久存储 | 启用Grafana持久存储 | 是，当Grafana启用时                                   | 否
+存储源 | 使用存储类来配置新的持久卷或使用现有的持久卷声明 | 是，当Grafana及其持久存储启用时                    | 使用存储类
+存储类 | Grafana存储使用的存储类型 | 是，当Grafana及其持久存储启用，且存储源为存储类时 | 使用默认存储类型
+持久卷大小 | Grafana所用的持久卷大小 | 是，当Grafana及其持久存储启用，且存储源为存储类时 | 5Gi
+现有的持久卷声明 | Grafana使用的现有的持久卷声明 | 是，当Grafana及其持久存储启用，且存储源为现有的持久卷声明时  | n/a
